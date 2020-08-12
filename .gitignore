@@ -131,3 +131,6 @@ dmypy.json
 #added
 /.idea
 .idea
+equelmemes.json
+reddit.ini
+database.ini
