@@ -132,5 +132,5 @@ dmypy.json
 /.idea
 .idea
 equelmemes.json
-reddit.ini
+src/reddit.ini
 database.ini
