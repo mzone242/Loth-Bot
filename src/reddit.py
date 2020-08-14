@@ -7,7 +7,8 @@ subreddit = None
 over_threshold = []
 
 
-def praw_config(filename='reddit.ini', section='Loth-Bot'):
+def praw_config(filename='src/reddit.ini', section='Loth-Bot'):
+    print('Reddit config')
     # create a parser
     parser = ConfigParser()
     # read config file
@@ -27,24 +28,30 @@ def praw_config(filename='reddit.ini', section='Loth-Bot'):
                          username=praw_params['username'],
                          password=praw_params['password'],
                          user_agent='Windows:Loth-Bot:v0.1 (by /u/mzone123)')
+    global subreddit
     subreddit = reddit.subreddit('PrequelMemes')
+    print(subreddit)
     return
 
 
 def fetch_posts(_limit):
     if subreddit is None:
         praw_config()
+    print(subreddit)
     new = subreddit.new(limit=_limit)
     seconds_since_epoch = int(datetime.datetime.now().timestamp())
     count = 0
+    total = 0
     for post in new:
-        _post = (post.id, post.score, int(post.created))
+        _post = (post.id, post.score, int(post.created_utc))
         if seconds_since_epoch - _post[2] > 86400:
+            print('broke')
             break
+        total += 1
         if _post[1] >= 100:
             over_threshold.append(_post)
             count += 1
-    print(count)
+    print(str(count) + ' posts found over 100 upvotes out of ' + str(total) + ' posts')
     print(seconds_since_epoch)
     return over_threshold
 
