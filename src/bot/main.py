@@ -13,7 +13,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 logging.basicConfig(level=logging.INFO)
 
-logging.info("Starting \"Loth-Bot\" bot script!")
+logger.info("Starting \"Loth-Bot\" bot script!")
 #_pfx = ["~", "?", "-"]
 #bot = commands.Bot(command_prefix=_pfx)
 #bot.help_command = commands.MinimalHelpCommand()
