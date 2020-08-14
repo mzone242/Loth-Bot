@@ -24,7 +24,7 @@ START_TIME = datetime.datetime.now()
 STARTED = False
 
 
-limit = 1
+limit = 1000
 
 print('Step 1')
 posts = reddit.fetch_posts(limit)
