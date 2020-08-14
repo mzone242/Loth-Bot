@@ -1,7 +1,6 @@
 import psycopg2
 import datetime
-from src import config
-from reddit_json import fetch_json
+from src.utils import config
 
 
 def insert_posts(posts):
