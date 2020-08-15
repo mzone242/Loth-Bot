@@ -43,3 +43,7 @@ def update_database(posts_to_add):
     """if over_1000 is not None:
         for post in over_1000:
             print('This post has over 1000 upvotes: https://www.reddit.com/r/PrequelMemes/comments/' + post[0])"""
+
+
+def clean_database():
+    database.remove_posts()

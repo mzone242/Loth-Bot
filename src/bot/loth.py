@@ -25,8 +25,6 @@ class Loth(commands.Bot):
         if message.author.bot:
             return
         if message.content.startswith('check_sub'):
-            channel = self.get_channel(self.channel)
-            await channel.send("Checking sub")
             await self.check_sub()
 
     @tasks.loop(minutes=5)
@@ -35,7 +33,8 @@ class Loth(commands.Bot):
 
     async def check_sub(self):
         channel = self.get_channel(self.channel)
-        posts = main.scrape_reddit(100)
+        await channel.send("Checking sub")
+        posts = main.scrape_reddit(1000)
         for post in posts:
             await channel.send(embed=discord.Embed(title="This post has over 100 upvotes: ",
                                                    description=f"https://www.reddit.com/r/"
@@ -47,3 +46,4 @@ class Loth(commands.Bot):
                                                    description=f"https://www.reddit.com/r/"
                                                                f"PrequelMemes/comments/{post[0]}"))
             await asyncio.sleep(1)
+        main.clean_database()
