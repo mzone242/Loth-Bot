@@ -1,25 +1,8 @@
-from argparse import ArgumentParser
+from src.bot import loth
 
-from discord.ext import commands
+#Yes I'm aware this is very bare bones
 
-from src.utils import config
-from src.utils import database
-from src.utils import reddit
+bot = loth.Loth()
 
-
-
-
-
-def main():
-
-    parser = ArgumentParser(description="Start a bot")
-    parser.add_argument('bot')
-    parser.add_argument('--debug', '-d', action='store_true')
-
-    args = parser.parse_args()
-
-    start(args.bot, args.debug)
-
-
-if __name__ == "__main__":
-    main()
+with open("token.txt", "r", encoding="utf-8") as token:
+    bot.run(token.read())

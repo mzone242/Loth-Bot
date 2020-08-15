@@ -7,7 +7,7 @@ subreddit = None
 over_threshold = []
 
 
-def praw_config(filename='utils/reddit.ini', section='Loth-Bot'):
+def praw_config(filename='src/utils/reddit.ini', section='Loth-Bot'):
     print('Reddit config')
     # create a parser
     parser = ConfigParser()
@@ -27,7 +27,7 @@ def praw_config(filename='utils/reddit.ini', section='Loth-Bot'):
                          client_secret=praw_params['client_secret'],
                          username=praw_params['username'],
                          password=praw_params['password'],
-                         user_agent='Windows:Loth-Bot:v0.1.1 (by /u/mzone123)')
+                         user_agent='Windows:Loth-Bot:v0.1.2 (by /u/mzone123)')
     global subreddit
     subreddit = reddit.subreddit('PrequelMemes')
     print(subreddit)
