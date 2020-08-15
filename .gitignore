@@ -137,3 +137,5 @@ database.ini
 __init__.py
 reddit_json.py
 logger.py
+pfp.png
+token.txt
