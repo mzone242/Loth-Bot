@@ -25,18 +25,21 @@ START_TIME = datetime.datetime.now()
 STARTED = False
 
 
-def routine(limit):
-    print('Step 1')
+def scrape_reddit(limit):
+    # print('Step 1')
     posts = reddit.fetch_posts(limit)
-    print('Step 2')
-    posts_to_add = database.check_posts(posts)
-    if posts_to_add is not None:
+    # print('Step 2')
+    return database.check_posts(posts)
+    """if posts_to_add is not None:
         for post in posts_to_add:
-            print('This post has over 100 upvotes: https://www.reddit.com/r/PrequelMemes/comments/' + post[0])
+            print('This post has over 100 upvotes: https://www.reddit.com/r/PrequelMemes/comments/' + post[0])"""
     # print(posts_to_add)
-    print('Step 3')
+    # print('Step 3')
+
+
+def update_database(posts_to_add):
     database.insert_posts(posts_to_add)
-    over_1000 = database.update_posts()
-    if over_1000 is not None:
+    return database.update_posts()
+    """if over_1000 is not None:
         for post in over_1000:
-            print('This post has over 1000 upvotes: https://www.reddit.com/r/PrequelMemes/comments/' + post[0])
+            print('This post has over 1000 upvotes: https://www.reddit.com/r/PrequelMemes/comments/' + post[0])"""
