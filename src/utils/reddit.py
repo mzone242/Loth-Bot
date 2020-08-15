@@ -39,12 +39,12 @@ def fetch_posts(_limit):
         praw_config()
     print(subreddit)
     new = subreddit.new(limit=_limit)
-    seconds_since_epoch = int(datetime.datetime.now().timestamp())
+    time = int(datetime.datetime.now().timestamp())
     count = 0
     total = 0
     for post in new:
         _post = (post.id, post.score, int(post.created_utc))
-        if seconds_since_epoch - _post[2] > 86400:
+        if time - _post[2] > 86400:
             print('broke')
             break
         total += 1
@@ -52,7 +52,7 @@ def fetch_posts(_limit):
             over_threshold.append(_post)
             count += 1
     print(str(count) + ' posts found over 100 upvotes out of ' + str(total) + ' posts')
-    print(seconds_since_epoch)
+    print(time)
     return over_threshold
 
 
