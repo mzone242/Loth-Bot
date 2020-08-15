@@ -19,6 +19,7 @@ class Loth(commands.Bot):
         super().run(token, reconnect=True)
 
     async def on_ready(self):
+        self.routine.start()
         print('Logged in as {0.user}.'.format(self))
 
     async def on_message(self, message):

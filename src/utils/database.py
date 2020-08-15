@@ -90,7 +90,7 @@ def remove_posts():
         params = config.config()
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        cur.execute(sql, seconds_since_epoch)
+        cur.execute(sql, [seconds_since_epoch])
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
