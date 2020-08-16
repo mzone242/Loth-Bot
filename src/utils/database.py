@@ -60,7 +60,7 @@ def check_posts(posts):
 
 def update_posts():
     #print('updating')
-    sql = """SELECT id FROM posts WHERE score >= 1000 AND thousand = FALSE"""
+    sql = """SELECT * FROM posts WHERE score >= 1000 AND thousand = FALSE"""
     sql2 = """UPDATE posts SET thousand = TRUE WHERE score >= 1000 AND thousand = FALSE"""
     conn = None
     over_threshold = None

@@ -27,7 +27,7 @@ def praw_config(filename='src/utils/reddit.ini', section='Loth-Bot'):
                          client_secret=praw_params['client_secret'],
                          username=praw_params['username'],
                          password=praw_params['password'],
-                         user_agent='Windows:Loth-Bot:v0.1.2 (by /u/mzone123)')
+                         user_agent='Windows:Loth-Bot:v0.1.3 (by /u/mzone123)')
     global subreddit
     subreddit = reddit.subreddit('PrequelMemes')
     #print(subreddit)
@@ -45,7 +45,6 @@ def fetch_posts(_limit):
     total = 0
     for post in new:
         _post = (post.id, post.score, int(post.created_utc), False, post.author.name, post.url, post.title)
-        print(_post)
         if time - _post[2] > 86400:
             #print('broke')
             break
