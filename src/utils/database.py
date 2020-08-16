@@ -5,8 +5,8 @@ from src.utils import config
 
 def insert_posts(posts):
     #print('inserting')
-    sql = """INSERT INTO posts(id, score, timestamp)
-             VALUES(%s, %s, %s);"""
+    sql = """INSERT INTO posts(id, score, timestamp, thousand, author, url, title)
+             VALUES(%s, %s, %s, %s, %s, %s, %s);"""
     conn = None
     try:
         # read database configuration
