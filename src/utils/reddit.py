@@ -40,6 +40,7 @@ def fetch_posts(_limit):
     #print(subreddit)
     new = subreddit.new(limit=_limit)
     time = int(datetime.datetime.now().timestamp())
+    over_threshold.clear()
     count = 0
     total = 0
     for post in new:
