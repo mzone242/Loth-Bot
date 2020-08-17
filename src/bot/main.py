@@ -4,7 +4,7 @@ import datetime
 from src.utils import reddit
 from src.utils import database
 
-logger = logging.getLogger(__name__)
+"""logger = logging.getLogger(__name__)
 filename = './logs/{}.log'
 handler = logging.FileHandler(filename.format(
     str(datetime.datetime.now()).replace(' ', '_').replace(':', 'h', 1).replace(':', 'm').split('.')[0][:-2]))
@@ -19,10 +19,10 @@ logger.info("Starting \"Loth-Bot\" bot script!")
 # bot = commands.Bot(command_prefix=_pfx)
 # bot.help_command = commands.MinimalHelpCommand()
 # bot.remove_command('help')
-version = "v0.1.2"
+version = "v0.1.4"
 
 START_TIME = datetime.datetime.now()
-STARTED = False
+STARTED = False"""
 
 
 def scrape_reddit(limit):
