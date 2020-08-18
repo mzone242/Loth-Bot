@@ -44,6 +44,8 @@ def fetch_posts(_limit):
     count = 0
     total = 0
     for post in new:
+        if post is None:
+            continue
         _post = (post.id, post.score, int(post.created_utc), False, post.author.name, post.url, post.title)
         if time - _post[2] > 86400:
             #print('broke')

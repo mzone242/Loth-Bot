@@ -53,6 +53,8 @@ class Loth(commands.Bot):
     async def send_embed(self, posts, upvotes, _channel):
         channel = self.get_channel(_channel)
         for post in posts:
+            if post is None:
+                continue
             embed = discord.Embed(title=f"This post has over {upvotes} upvotes. Please check it out.",
                                   description="Please react with :white_check_mark: if you checked the post and it is "
                                               "good and please react with :x: if you checked the post and removed it.")
