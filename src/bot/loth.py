@@ -58,7 +58,7 @@ class Loth(commands.Bot):
             embed = discord.Embed(title=f"This post has over {upvotes} upvotes. Please check it out.",
                                   description="Please react with :white_check_mark: if you checked the post and it is "
                                               "good and please react with :x: if you checked the post and removed it.")
-            embed.add_field(name=f"{post[6]}", value=f"https://www.reddit.com/r/PrequelMemes/comments/{post[0]}")
+            embed.add_field(name=f"{post[6][:255]}", value=f"https://www.reddit.com/r/PrequelMemes/comments/{post[0]}")
             embed.set_author(name=post[4], url=f"https://www.reddit.com/u/{post[4]}")
             embed.set_image(url=post[5])
             msg = await channel.send(embed=embed)

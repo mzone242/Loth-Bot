@@ -8,7 +8,7 @@ over_threshold = []
 
 
 def praw_config(filename='src/utils/reddit.ini', section='Loth-Bot'):
-    #print('Reddit config')
+    # print('Reddit config')
     # create a parser
     parser = ConfigParser()
     # read config file
@@ -30,25 +30,30 @@ def praw_config(filename='src/utils/reddit.ini', section='Loth-Bot'):
                          user_agent='Windows:Loth-Bot:v0.1.4 (by /u/mzone123)')
     global subreddit
     subreddit = reddit.subreddit('PrequelMemes')
-    #print(subreddit)
+    # print(subreddit)
     return
 
 
 def fetch_posts(_limit):
     if subreddit is None:
         praw_config()
-    #print(subreddit)
+    # print(subreddit)
     new = subreddit.new(limit=_limit)
     time = int(datetime.datetime.now().timestamp())
     over_threshold.clear()
     count = 0
     total = 0
+    name = None
     for post in new:
         if post is None:
             continue
-        _post = (post.id, post.score, int(post.created_utc), False, post.author.name, post.url, post.title)
+        if not post.author:
+            name = '[deleted]'
+        else:
+            name = post.author.name
+        _post = (post.id, post.score, int(post.created_utc), False, name, post.url, post.title)
         if time - _post[2] > 86400:
-            #print('broke')
+            # print('broke')
             break
         total += 1
         if _post[1] >= 100:
