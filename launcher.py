@@ -1,7 +1,7 @@
 import logging
 
 from src.bot import loth
-from src.utils.logger import setup_logger
+from src.utils.helper import setup_logger
 
 logger = logging.getLogger("launcher")
 debug = False

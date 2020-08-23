@@ -4,8 +4,7 @@ import logging
 import discord
 from discord.ext import tasks, commands
 
-from src.utils.database import config
-from src.bot import main
+from src.utils import helper
 
 logger = logging.getLogger("bot")
 
@@ -25,7 +24,7 @@ class Loth(commands.Bot):
 
     def run(self, token):
         logger.debug("Run method called.")
-        config()
+        helper.config()
         super().run(token, reconnect=True)
 
     async def on_ready(self):
@@ -44,11 +43,10 @@ class Loth(commands.Bot):
 
     async def check_sub(self):
         logger.info("Checking sub")
-        posts = main.scrape_reddit(1000)
+        posts = helper.scrape_reddit(1000)
         await self.send_embed(posts, 100, self.channel2)
-        _posts = main.update_database(posts)
-        await self.send_embed(_posts, 1000, self.channel)
-        main.clean_database()
+        await self.send_embed(helper.update_database(posts), 1000, self.channel)
+        helper.clean_database()
 
     async def send_embed(self, posts, upvotes, _channel):
         logger.info(f"Sending {len(posts)} to {_channel}.")

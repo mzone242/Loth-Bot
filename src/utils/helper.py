@@ -1,5 +1,9 @@
 import logging
 import datetime
+import sys
+
+from src.utils import reddit
+from src.utils import database
 
 logger = logging.getLogger('utils.logger')
 
@@ -32,3 +36,21 @@ def setup_logger(name, debug):
     logger.addHandler(stream_handler)
     logger.setLevel(level)
     return logger
+
+
+def config():
+    database.config()
+
+
+def scrape_reddit(limit):
+    posts = reddit.fetch_posts(limit)
+    return database.check_posts(posts)
+
+
+def update_database(posts_to_add):
+    database.insert_posts(posts_to_add)
+    return database.update_posts()
+
+
+def clean_database():
+    database.remove_posts()
