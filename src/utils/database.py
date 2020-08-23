@@ -1,16 +1,31 @@
 import psycopg2
 import datetime
-from src.utils import config
+from configparser import ConfigParser
+
+db = {}
+
+
+def config(filename='src/utils/database.ini', section='postgresql'):
+    parser = ConfigParser()
+    parser.read(filename)
+    global db
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+    return
 
 
 def insert_posts(posts):
-    #print('inserting')
+    # print('inserting')
     sql = """INSERT INTO posts(id, score, timestamp, thousand, author, url, title)
              VALUES(%s, %s, %s, %s, %s, %s, %s);"""
     conn = None
     try:
         # read database configuration
-        params = config.config()
+        params = db
         # connect to the PostgreSQL database
         conn = psycopg2.connect(**params)
         # create a new cursor
@@ -30,23 +45,23 @@ def insert_posts(posts):
 
 
 def check_posts(posts):
-    #print('checking')
+    # print('checking')
     add_posts = []
     sql = """SELECT * FROM posts WHERE id LIKE %s"""
     sql2 = """UPDATE posts SET score = %s WHERE id LIKE %s"""
     conn = None
     try:
-        params = config.config()
+        params = db
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         for post in posts:
-            #print(post)
-            #print(post[0])
+            # print(post)
+            # print(post[0])
             cur.execute(sql, (post[0],))
             if cur.fetchone() is None:
                 add_posts.append(post)
             else:
-                #print('updating ' + post[0])
+                # print('updating ' + post[0])
                 cur.execute(sql2, (post[1], post[0]))
         conn.commit()
         cur.close()
@@ -59,13 +74,13 @@ def check_posts(posts):
 
 
 def update_posts():
-    #print('updating')
+    # print('updating')
     sql = """SELECT * FROM posts WHERE score >= 1000 AND thousand = FALSE"""
     sql2 = """UPDATE posts SET thousand = TRUE WHERE score >= 1000 AND thousand = FALSE"""
     conn = None
     over_threshold = None
     try:
-        params = config.config()
+        params = db
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         cur.execute(sql)
@@ -87,7 +102,7 @@ def remove_posts():
     sql = """DELETE FROM posts WHERE %s - timestamp > 86400"""
     conn = None
     try:
-        params = config.config()
+        params = db
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         cur.execute(sql, [seconds_since_epoch])

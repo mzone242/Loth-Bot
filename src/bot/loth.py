@@ -4,6 +4,7 @@ import logging
 import discord
 from discord.ext import tasks, commands
 
+from src.utils.database import config
 from src.bot import main
 
 logger = logging.getLogger("bot")
@@ -23,6 +24,8 @@ class Loth(commands.Bot):
         self.channel2 = MEH_SHIT
 
     def run(self, token):
+        logger.debug("Run method called.")
+        config()
         super().run(token, reconnect=True)
 
     async def on_ready(self):
