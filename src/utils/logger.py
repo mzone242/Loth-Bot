@@ -1,8 +1,7 @@
 import logging
 import datetime
 
-
-logger = logging.getLogger('utils.helpers')
+logger = logging.getLogger('utils.logger')
 
 
 def setup_logger(name, debug):
