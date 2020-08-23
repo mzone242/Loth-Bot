@@ -1,11 +1,14 @@
+import asyncio
+import logging
+
 import discord
 from discord.ext import tasks, commands
 
-import asyncio
-
 from src.bot import main
 
-VERSION = '0.1.4'
+logger = logging.getLogger("bot")
+
+VERSION = "0.2.0"
 CHANNEL = 455483961490276353
 NOT_SHIT = 725127435737367054
 MEH_SHIT = 714410477236519001
@@ -13,7 +16,7 @@ MEH_SHIT = 714410477236519001
 
 class Loth(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix='%')
+        super().__init__(command_prefix="%")
         self.exit_code = 0
         self.version = VERSION
         self.channel = NOT_SHIT
@@ -24,19 +27,13 @@ class Loth(commands.Bot):
 
     async def on_ready(self):
         self.routine.start()
-        print('Logged in as {0.user}.'.format(self))
+        logger.info("Logged in as {0.user}.".format(self))
 
     async def on_message(self, message):
         if message.author.bot:
             return
-        """post = ("iajjog", 224, 1597540648, False, "howardthemetalalien", "https://i.redd.it/caa344x0n9h51.png", "hello there")
-        embed = discord.Embed(title="This post has received over 100 upvotes. Please check it out.")
-        embed.set_author(name=post[4], url=f"https://www.reddit.com/u/{post[4]}")
-        embed.set_image(url=post[5])
-        embed.description = f"https://www.reddit.com/r/PrequelMemes/comments/{post[0]}"
-        channel = self.get_channel(self.channel2)
-        await channel.send(embed=embed)"""
-        if message.content.startswith('check_sub'):
+        if message.content.startswith("check_sub"):
+        if message.content.startswith("check_sub"):
             await self.check_sub()
 
     @tasks.loop(minutes=5)
@@ -44,7 +41,7 @@ class Loth(commands.Bot):
         await self.check_sub()
 
     async def check_sub(self):
-        # await channel.send("Checking sub")
+        logger.info("Checking sub")
         posts = main.scrape_reddit(1000)
         await self.send_embed(posts, 100, self.channel2)
         _posts = main.update_database(posts)
@@ -52,6 +49,7 @@ class Loth(commands.Bot):
         main.clean_database()
 
     async def send_embed(self, posts, upvotes, _channel):
+        logger.info(f"Sending {len(posts)} to {_channel}.")
         channel = self.get_channel(_channel)
         for post in posts:
             if post is None:
