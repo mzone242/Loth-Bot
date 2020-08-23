@@ -14,6 +14,7 @@ MEH_SHIT = 714410477236519001
 class Loth(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix='%')
+        self.exit_code = 0
         self.version = VERSION
         self.channel = NOT_SHIT
         self.channel2 = MEH_SHIT
@@ -65,3 +66,7 @@ class Loth(commands.Bot):
             await msg.add_reaction("✅")
             await msg.add_reaction("❌")
             await asyncio.sleep(1)
+
+    @property
+    def exit_code(self):
+        return self._exit_code
