@@ -33,7 +33,6 @@ class Loth(commands.Bot):
         if message.author.bot:
             return
         if message.content.startswith("check_sub"):
-        if message.content.startswith("check_sub"):
             await self.check_sub()
 
     @tasks.loop(minutes=5)
