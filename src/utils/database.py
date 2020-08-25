@@ -8,23 +8,13 @@ logger = logging.getLogger("utils.database")
 db = None
 
 
-def config(filename='src/utils/database.ini', section='postgresql'):
-    parser = ConfigParser()
-    parser.read(filename)
+def load_db(_db):
     global db
-    db = {}
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+    db = _db
     return
 
 
 def insert_posts(posts):
-    if db is None:
-        config()
     for post in posts:
         logger.info(f'Adding {post[0]} to database with info {post}')
     sql = """INSERT INTO posts(id, score, timestamp, thousand, author, url, title)
@@ -38,7 +28,7 @@ def insert_posts(posts):
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        logger.error(error)
     finally:
         if conn is not None:
             conn.close()
@@ -46,8 +36,6 @@ def insert_posts(posts):
 
 
 def update_scores(posts):
-    if db is None:
-        config()
     logger.info('Updating scores in database')
     add_posts = []
     sql = """SELECT * FROM posts WHERE id LIKE %s"""
@@ -66,7 +54,7 @@ def update_scores(posts):
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        logger.error(error)
     finally:
         if conn is not None:
             conn.close()
@@ -74,9 +62,6 @@ def update_scores(posts):
 
 
 def update_posts():
-    if db is None:
-        config()
-
     sql = """SELECT * FROM posts WHERE score >= 1000 AND thousand = FALSE"""
     sql2 = """UPDATE posts SET thousand = TRUE WHERE score >= 1000 AND thousand = FALSE"""
     conn = None
@@ -91,7 +76,7 @@ def update_posts():
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        logger.error(error)
     finally:
         if conn is not None:
             conn.close()
@@ -99,8 +84,6 @@ def update_posts():
 
 
 def remove_posts():
-    if db is None:
-        config()
     logger.info('Removing posts over 1 day old from database')
     seconds_since_epoch = int(datetime.datetime.now().timestamp())
     sql = """DELETE FROM posts WHERE %s - timestamp > 86400"""
@@ -113,7 +96,7 @@ def remove_posts():
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        logger.error(error)
     finally:
         if conn is not None:
             conn.close()

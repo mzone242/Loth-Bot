@@ -25,7 +25,7 @@ class Loth(commands.Bot):
 
     def run(self, token):
         logger.info("Run method called.")
-        helper.config()
+        helper.load_db_creds()
         helper.load_reddit_creds(self.version, self.subreddit)
         super().run(token, reconnect=True)
 
@@ -54,16 +54,19 @@ class Loth(commands.Bot):
     async def send_embed(self, posts, upvotes, _channel):
         logger.info(f"Sending {len(posts)} to {_channel}.")
         channel = self.get_channel(_channel)
+
         for post in posts:
             if post is None:
                 logger.info(f"None post encountered. Please check {posts}")
                 continue
+
             embed = discord.Embed(title=f"This post has over {upvotes} upvotes. Please check it out.",
                                   description="Please react with :white_check_mark: if you checked the post and it is "
                                               "good and please react with :x: if you checked the post and removed it.")
             embed.add_field(name=f"{post[6][:255]}", value=f"https://www.reddit.com/r/PrequelMemes/comments/{post[0]}")
             embed.set_author(name=post[4], url=f"https://www.reddit.com/u/{post[4]}")
             embed.set_image(url=post[5])
+
             msg = await channel.send(embed=embed)
             await msg.add_reaction("✅")
             await msg.add_reaction("❌")

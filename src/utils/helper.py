@@ -40,20 +40,28 @@ def setup_logger(name, debug):
     return logger
 
 
-# rework to loading credentials
-def config():
-    database.config()
+def load_db_creds(filename='src/utils/database.ini', section='postgresql'):
+    logger.info('Configuring db')
+    parser = ConfigParser()
+    parser.read(filename)
+    db = {}
 
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
 
-def praw_config(version):
-    # reddit.pass_version(version)
-    reddit.praw_config()
+    database.load_db(db)
+    return
 
 
 def load_reddit_creds(version, subreddit, filename='src/utils/reddit.ini', section='Loth_Bot'):
     logger.info('Configuring praw')
     parser = ConfigParser()
     parser.read(filename)
+
     if parser.has_section(section):
         client_id = parser.get(section, 'client_id')
         client_secret = parser.get(section, 'client_secret')
@@ -61,12 +69,13 @@ def load_reddit_creds(version, subreddit, filename='src/utils/reddit.ini', secti
         password = parser.get(section, 'password')
     else:
         logger.error('Section {0} not found in the {1} file'.format(section, filename))
+
     _reddit = praw.Reddit(client_id=client_id,
                           client_secret=client_secret,
                           username=username,
                           password=password,
                           user_agent=sys.platform + ':Loth-Bot:' + version + ' (by /u/mzone123)')
-    reddit.pass_subreddit(_reddit.subreddit(subreddit))
+    reddit.load_subreddit(_reddit.subreddit(subreddit))
     return
 
 
