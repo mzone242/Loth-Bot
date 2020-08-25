@@ -8,7 +8,7 @@ from src.utils import helper
 
 logger = logging.getLogger("bot")
 
-VERSION = "0.2.0"
+VERSION = "v0.2.0"
 CHANNEL = 455483961490276353
 NOT_SHIT = 725127435737367054
 MEH_SHIT = 714410477236519001
@@ -25,6 +25,7 @@ class Loth(commands.Bot):
     def run(self, token):
         logger.debug("Run method called.")
         helper.config()
+        helper.praw_config(self.version)
         super().run(token, reconnect=True)
 
     async def on_ready(self):

@@ -42,6 +42,11 @@ def config():
     database.config()
 
 
+def praw_config(version):
+    reddit.pass_version(version)
+    reddit.praw_config()
+
+
 def scrape_reddit(limit):
     posts = reddit.fetch_posts(limit)
     return database.check_posts(posts)

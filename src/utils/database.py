@@ -1,6 +1,9 @@
 import psycopg2
 import datetime
+import logging
 from configparser import ConfigParser
+
+logger = logging.getLogger("utils.database")
 
 db = {}
 
