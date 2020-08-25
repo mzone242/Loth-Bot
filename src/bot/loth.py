@@ -46,7 +46,7 @@ class Loth(commands.Bot):
 
     async def check_sub(self):
         logger.info("Checking sub")
-        posts = helper.scrape_reddit(100)
+        posts = helper.scrape_reddit(200)
         await self.send_embed(posts, 100, self.channel2)
         await self.send_embed(helper.update_database(posts), 1000, self.channel)
         helper.clean_database()

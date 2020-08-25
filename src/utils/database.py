@@ -62,6 +62,7 @@ def update_scores(posts):
 
 
 def update_posts():
+    logger.info('Marking posts with over 1000 upvotes in database')
     sql = """SELECT * FROM posts WHERE score >= 1000 AND thousand = FALSE"""
     sql2 = """UPDATE posts SET thousand = TRUE WHERE score >= 1000 AND thousand = FALSE"""
     conn = None
