@@ -37,7 +37,7 @@ def setup_logger(name, debug):
     logger.setLevel(level)
     return logger
 
-
+# rework to loading credentials
 def config():
     database.config()
 

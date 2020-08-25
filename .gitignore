@@ -131,8 +131,7 @@ dmypy.json
 #added
 /.idea
 .idea
-reddit.ini
-database.ini
+*.ini
 __init__.py
 pfp.png
 token.txt
