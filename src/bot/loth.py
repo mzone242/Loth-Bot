@@ -53,6 +53,7 @@ class Loth(commands.Bot):
         channel = self.get_channel(_channel)
         for post in posts:
             if post is None:
+                logger.info(f"None post encountered. Please check {posts}")
                 continue
             embed = discord.Embed(title=f"This post has over {upvotes} upvotes. Please check it out.",
                                   description="Please react with :white_check_mark: if you checked the post and it is "
