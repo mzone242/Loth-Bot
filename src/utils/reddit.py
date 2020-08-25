@@ -21,6 +21,7 @@ def fetch_posts(_limit):
     over_threshold.clear()
     count = 0
     total = 0
+    time = int(datetime.datetime.now().timestamp())
 
     for post in top:
         if post is None:
@@ -32,10 +33,10 @@ def fetch_posts(_limit):
             name = post.author.name
         _post = (post.id, post.score, int(post.created_utc), False, name, post.url, post.title)
         total += 1
-        if _post[1] >= 100:
+        if _post[1] >= 100 and time - _post[2] > 86400:
             over_threshold.append(_post)
             count += 1
 
     logger.info(f'{str(count)} posts found over 100 upvotes out of {str(total)} posts')
-    logger.info(f'Current time is {int(datetime.datetime.now().timestamp())}')
+    logger.info(f'Current time is {time}')
     return over_threshold
