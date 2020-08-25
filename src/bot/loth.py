@@ -8,24 +8,25 @@ from src.utils import helper
 
 logger = logging.getLogger("bot")
 
-VERSION = "v0.2.0"
+VERSION = "v0.2.1"
 CHANNEL = 455483961490276353
 NOT_SHIT = 725127435737367054
 MEH_SHIT = 714410477236519001
+SUBREDDIT = 'PrequelMemes'
 
 
 class Loth(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix="%")
-        self.exit_code = 0
         self.version = VERSION
-        self.channel = NOT_SHIT
-        self.channel2 = MEH_SHIT
+        self.channel = CHANNEL
+        self.channel2 = CHANNEL
+        self.subreddit = SUBREDDIT
 
     def run(self, token):
         logger.debug("Run method called.")
         helper.config()
-        helper.praw_config(self.version)
+        helper.load_reddit_creds(self.version, self.subreddit)
         super().run(token, reconnect=True)
 
     async def on_ready(self):
@@ -41,10 +42,11 @@ class Loth(commands.Bot):
     @tasks.loop(minutes=5)
     async def routine(self):
         await self.check_sub()
+        logger.info("Routine sleeping...")
 
     async def check_sub(self):
         logger.info("Checking sub")
-        posts = helper.scrape_reddit(1000)
+        posts = helper.scrape_reddit(100)
         await self.send_embed(posts, 100, self.channel2)
         await self.send_embed(helper.update_database(posts), 1000, self.channel)
         helper.clean_database()

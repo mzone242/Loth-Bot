@@ -1,6 +1,8 @@
+import praw
 import logging
 import datetime
 import sys
+from configparser import ConfigParser
 
 from src.utils import reddit
 from src.utils import database
@@ -37,14 +39,34 @@ def setup_logger(name, debug):
     logger.setLevel(level)
     return logger
 
+
 # rework to loading credentials
 def config():
     database.config()
 
 
 def praw_config(version):
-    reddit.pass_version(version)
+    # reddit.pass_version(version)
     reddit.praw_config()
+
+
+def load_reddit_creds(version, subreddit, filename='src/utils/reddit.ini', section='Loth_Bot'):
+    parser = ConfigParser()
+    parser.read(filename)
+    if parser.has_section(section):
+        client_id = config.get(section, 'client_id')
+        client_secret = config.get(section, 'client_secret')
+        username = config.get(section, 'username')
+        password = config.get(section, 'password')
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+    _reddit = praw.Reddit(client_id=client_id,
+                          client_secret=client_secret,
+                          username=username,
+                          password=password,
+                          user_agent=sys.platform + ':Loth-Bot:' + version + ' (by /u/mzone123)')
+    reddit.pass_subreddit(_reddit.subreddit(subreddit))
+    return
 
 
 def scrape_reddit(limit):

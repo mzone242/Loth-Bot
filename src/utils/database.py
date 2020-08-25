@@ -26,7 +26,7 @@ def insert_posts(posts):
     if db is None:
         config()
     for post in posts:
-        logger.info(f'Adding {post.id} to database with info {post}')
+        logger.info(f'Adding {post[0]} to database with info {post}')
     sql = """INSERT INTO posts(id, score, timestamp, thousand, author, url, title)
              VALUES(%s, %s, %s, %s, %s, %s, %s);"""
     conn = None
@@ -101,7 +101,7 @@ def update_posts():
 def remove_posts():
     if db is None:
         config()
-    print('removing')
+    logger.info('Removing posts over 1 day old from database')
     seconds_since_epoch = int(datetime.datetime.now().timestamp())
     sql = """DELETE FROM posts WHERE %s - timestamp > 86400"""
     conn = None

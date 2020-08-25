@@ -17,7 +17,7 @@ logger.info(f"Starting bot.")
 bot = loth.Loth()
 
 try:
-    with open("token.txt", "r", encoding="utf-8") as token:
+    with open("token2.txt", "r", encoding="utf-8") as token:
         bot.run(token.read())
 finally:
     try:
