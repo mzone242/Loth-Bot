@@ -46,6 +46,8 @@ def fetch_posts(_limit):
         else:
             subreddit = reddit.subreddit(SUBREDDIT)
     new = subreddit.new(limit=_limit)
+    top = subreddit.top("day", limit=200)
+    # ideally get rid of this variable and rework algorithm below to searching top 200 last 24 hours
     time = int(datetime.datetime.now().timestamp())
     over_threshold.clear()
     count = 0

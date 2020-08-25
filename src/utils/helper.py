@@ -5,7 +5,7 @@ import sys
 from src.utils import reddit
 from src.utils import database
 
-logger = logging.getLogger('utils.logger')
+logger = logging.getLogger('utils.helper')
 
 
 def setup_logger(name, debug):
@@ -49,7 +49,7 @@ def praw_config(version):
 
 def scrape_reddit(limit):
     posts = reddit.fetch_posts(limit)
-    return database.check_posts(posts)
+    return database.update_scores(posts)
 
 
 def update_database(posts_to_add):

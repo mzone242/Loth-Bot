@@ -5,13 +5,14 @@ from configparser import ConfigParser
 
 logger = logging.getLogger("utils.database")
 
-db = {}
+db = None
 
 
 def config(filename='src/utils/database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
     global db
+    db = {}
     if parser.has_section(section):
         params = parser.items(section)
         for param in params:
@@ -22,22 +23,19 @@ def config(filename='src/utils/database.ini', section='postgresql'):
 
 
 def insert_posts(posts):
-    # print('inserting')
+    if db is None:
+        config()
+    for post in posts:
+        logger.info(f'Adding {post.id} to database with info {post}')
     sql = """INSERT INTO posts(id, score, timestamp, thousand, author, url, title)
              VALUES(%s, %s, %s, %s, %s, %s, %s);"""
     conn = None
     try:
-        # read database configuration
         params = db
-        # connect to the PostgreSQL database
         conn = psycopg2.connect(**params)
-        # create a new cursor
         cur = conn.cursor()
-        # execute the INSERT statement
         cur.executemany(sql, posts)
-        # commit the changes to the database
         conn.commit()
-        # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -47,8 +45,10 @@ def insert_posts(posts):
     return
 
 
-def check_posts(posts):
-    # print('checking')
+def update_scores(posts):
+    if db is None:
+        config()
+    logger.info('Updating scores in database')
     add_posts = []
     sql = """SELECT * FROM posts WHERE id LIKE %s"""
     sql2 = """UPDATE posts SET score = %s WHERE id LIKE %s"""
@@ -58,13 +58,10 @@ def check_posts(posts):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         for post in posts:
-            # print(post)
-            # print(post[0])
             cur.execute(sql, (post[0],))
             if cur.fetchone() is None:
                 add_posts.append(post)
             else:
-                # print('updating ' + post[0])
                 cur.execute(sql2, (post[1], post[0]))
         conn.commit()
         cur.close()
@@ -77,7 +74,9 @@ def check_posts(posts):
 
 
 def update_posts():
-    # print('updating')
+    if db is None:
+        config()
+
     sql = """SELECT * FROM posts WHERE score >= 1000 AND thousand = FALSE"""
     sql2 = """UPDATE posts SET thousand = TRUE WHERE score >= 1000 AND thousand = FALSE"""
     conn = None
@@ -100,6 +99,8 @@ def update_posts():
 
 
 def remove_posts():
+    if db is None:
+        config()
     print('removing')
     seconds_since_epoch = int(datetime.datetime.now().timestamp())
     sql = """DELETE FROM posts WHERE %s - timestamp > 86400"""
