@@ -33,7 +33,7 @@ def fetch_posts(_limit):
             name = post.author.name
         _post = (post.id, post.score, int(post.created_utc), False, name, post.url, post.title)
         total += 1
-        if _post[1] >= 100 and time - _post[2] > 86400:
+        if _post[1] >= 100 and time - _post[2] < 86400:
             over_threshold.append(_post)
             count += 1
 
