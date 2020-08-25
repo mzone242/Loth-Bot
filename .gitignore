@@ -134,4 +134,4 @@ dmypy.json
 *.ini
 __init__.py
 pfp.png
-token.txt
+*.txt

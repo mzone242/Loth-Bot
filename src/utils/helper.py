@@ -51,15 +51,16 @@ def praw_config(version):
 
 
 def load_reddit_creds(version, subreddit, filename='src/utils/reddit.ini', section='Loth_Bot'):
+    logger.info('Configuring praw')
     parser = ConfigParser()
     parser.read(filename)
     if parser.has_section(section):
-        client_id = config.get(section, 'client_id')
-        client_secret = config.get(section, 'client_secret')
-        username = config.get(section, 'username')
-        password = config.get(section, 'password')
+        client_id = parser.get(section, 'client_id')
+        client_secret = parser.get(section, 'client_secret')
+        username = parser.get(section, 'username')
+        password = parser.get(section, 'password')
     else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+        logger.error('Section {0} not found in the {1} file'.format(section, filename))
     _reddit = praw.Reddit(client_id=client_id,
                           client_secret=client_secret,
                           username=username,

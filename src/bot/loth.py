@@ -24,7 +24,7 @@ class Loth(commands.Bot):
         self.subreddit = SUBREDDIT
 
     def run(self, token):
-        logger.debug("Run method called.")
+        logger.info("Run method called.")
         helper.config()
         helper.load_reddit_creds(self.version, self.subreddit)
         super().run(token, reconnect=True)
