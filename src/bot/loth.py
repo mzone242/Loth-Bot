@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import random
 
 import discord
 from discord.ext import tasks, commands
@@ -8,7 +9,7 @@ from src.utils import helper
 
 logger = logging.getLogger("bot")
 
-VERSION = "v0.2.1"
+VERSION = "v1.0.0"
 CHANNEL = 455483961490276353
 NOT_SHIT = 725127435737367054
 MEH_SHIT = 714410477236519001
