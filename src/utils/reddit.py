@@ -1,8 +1,6 @@
 import datetime
 import logging
 
-import prawcore
-
 logger = logging.getLogger("utils.reddit")
 
 subreddit = None
@@ -40,7 +38,7 @@ def fetch_posts(_limit):
 
         logger.info(f'{str(count)} posts found over 100 upvotes out of {str(total)} posts')
         logger.info(f'Current time is {time}')
-    except prawcore.exceptions.ServerError as error:
-        logger.info(error)
+    except Exception as exception:
+        logger.info(exception)
         return None
     return over_threshold

@@ -58,7 +58,6 @@ class Loth(commands.Bot):
         channel = self.get_channel(_channel)
 
         for post in posts:
-            print(post[5])
             if post is None:
                 logger.info(f"None post encountered. Please check {posts}")
                 continue
