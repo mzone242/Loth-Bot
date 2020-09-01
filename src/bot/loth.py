@@ -48,15 +48,17 @@ class Loth(commands.Bot):
     async def check_sub(self):
         logger.info("Checking sub")
         posts = helper.scrape_reddit(200)
-        await self.send_embed(posts, 100, self.channel2)
-        await self.send_embed(helper.update_database(posts), 1000, self.channel)
-        helper.clean_database()
+        if posts is not None:
+            await self.send_embed(posts, 100, self.channel2)
+            await self.send_embed(helper.update_database(posts), 1000, self.channel)
+            helper.clean_database()
 
     async def send_embed(self, posts, upvotes, _channel):
         logger.info(f"Sending {len(posts)} to {_channel}.")
         channel = self.get_channel(_channel)
 
         for post in posts:
+            print(post[5])
             if post is None:
                 logger.info(f"None post encountered. Please check {posts}")
                 continue
