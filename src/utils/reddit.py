@@ -39,6 +39,6 @@ def fetch_posts(_limit):
         logger.info(f'{str(count)} posts found over 100 upvotes out of {str(total)} posts')
         logger.info(f'Current time is {time}')
     except Exception as exception:
-        logger.info(exception)
+        logger.exception(exception)
         return None
     return over_threshold
